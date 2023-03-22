@@ -2,3 +2,5 @@ rootProject.name = 'hibernate'
 
 include 'user-info'
 include 'user-service'
+include 'employee-service'
+
