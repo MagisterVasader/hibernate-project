@@ -1,7 +1,7 @@
 package com.modsen.software.employee_service.service;
 
 import com.modsen.software.employee_service.domain.Employee;
-import com.modsen.software.employee_service.repository.UserRepository;
+import com.modsen.software.employee_service.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeService {
 
-    private final UserRepository userRepository;
+    private final EmployeeRepository userRepository;
 
     @Transactional
     public List<Employee> getEmployees() {

@@ -9,7 +9,7 @@ import javax.persistence.LockModeType;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     // TODO: Way 1
     // The problem is a double increase in the version parameter and two update statements.

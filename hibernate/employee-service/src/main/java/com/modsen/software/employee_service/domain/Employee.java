@@ -32,7 +32,8 @@ public class Employee {
     @Column(name = "salary")
     private BigDecimal salary;
 
-    // TODO: The important part. Add this attribute to DB.
+    // TODO: NOTE
+    // The important part. Add this attribute to DB and locally.
     @Version
     private Integer version;
 }
