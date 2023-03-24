@@ -3,7 +3,7 @@ package com.modsen.software.user_service.repository;
 import com.modsen.software.user_service.domain.User;
 import com.modsen.software.user_service.domain.UserDto;
 import com.modsen.software.user_service.domain.UserPage;
-import org.hibernate.jpa.QueryHints;
+import org.hibernate.Session;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -67,6 +67,12 @@ public class UserRepository {
             return null;
         }
 
+//        EntityGraph<?> entityGraph = entityManager.getEntityGraph("user.roles");
+//        TypedQuery<User> query = entityManager.createQuery("select u from User u where u.id = :id", User.class);
+//        query.setHint(QueryHints.HINT_FETCHGRAPH, entityGraph);
+////        query.setHint(QueryHints.HINT_LOADGRAPH, entityGraph);
+//        query.setParameter("id", id);
+
         // TODO: NOTE
         // If you are using Criteria API and want to use "second level cache"
         // you need to control it manually or use query caching
@@ -75,26 +81,29 @@ public class UserRepository {
         //            return entityManager.find(User.class, id);
         //        }
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> cq = cb.createQuery(User.class);
-        Root<User> root = cq.from(User.class);
+//        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<User> cq = cb.createQuery(User.class);
+//        Root<User> root = cq.from(User.class);
+//
+//        Predicate predicate = cb.equal(root.get("id"), id);
+//
+//        cq.select(root);
+//        cq.where(predicate);
+//
+//        // TODO: NOTE
+//        // If you are using "native query" hibernate invalidate all regions in cache.In hibernate you can add
+//        // session.createNativeQuery("update users set id = 0").addSynchronizedEntityClass(User.class) and specify the region.
+//        // If you are using "hibernate query" hibernate invalidate only region which is updated.
+//        TypedQuery<User> query = entityManager.createQuery(cq);
+//        // TODO: NOTE
+//        // To enable query cache you can do it using @QueryHints(value = {@QueryHint(name=...,value=...},...)
+//        // or set this option using Criteria API
+//        query.setHint(QueryHints.HINT_CACHEABLE, "true");
+//        return query.getSingleResult();
 
-        Predicate predicate = cb.equal(root.get("id"), id);
-
-        cq.select(root);
-        cq.where(predicate);
-
-
-        // TODO: NOTE
-        // If you are using "native query" hibernate invalidate all regions in cache.In hibernate you can add
-        // session.createNativeQuery("update users set id = 0").addSynchronizedEntityClass(User.class) and specify the region.
-        // If you are using "hibernate query" hibernate invalidate only region which is updated.
-        TypedQuery<User> query = entityManager.createQuery(cq);
-        // TODO: NOTE
-        // To enable query cache you can do it using @QueryHints(value = {@QueryHint(name=...,value=...},...)
-        // or set this option using Criteria API
-        query.setHint(QueryHints.HINT_CACHEABLE, "true");
-        return query.getSingleResult();
+        Session session = entityManager.unwrap(Session.class);
+        session.enableFetchProfile("user.roles");
+        return session.get(User.class, id);
     }
 
     public String getUserFirstnameById(Integer id) {

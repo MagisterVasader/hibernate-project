@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.FetchProfile;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
@@ -15,10 +18,28 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
 
+@NamedEntityGraph(
+        name = "user.roles",
+        attributeNodes = @NamedAttributeNode(
+                value = "roles"
+        )
+)
+@FetchProfile(
+        name = "user.roles",
+        fetchOverrides = {
+                @FetchProfile.FetchOverride(
+                        entity = User.class,
+                        association = "roles",
+                        mode = FetchMode.JOIN
+                )
+        }
+)
 @Entity
 @Table(name = "users")
 @Data
@@ -48,5 +69,6 @@ public class User {
     @Cache(usage = CacheConcurrencyStrategy.READ_ONLY, region = "roles")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id")
+    @Fetch(FetchMode.JOIN)
     private Set<Role> roles;
 }
