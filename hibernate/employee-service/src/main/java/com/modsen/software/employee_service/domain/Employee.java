@@ -3,6 +3,7 @@ package com.modsen.software.employee_service.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 @Entity
 //@OptimisticLocking(type = OptimisticLockType.DIRTY)
 @Table(name = "employees")
+@DynamicUpdate
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

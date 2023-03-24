@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeService {
 
-    private final EmployeeRepository userRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Transactional
     public List<Employee> getEmployees() {
@@ -22,16 +22,21 @@ public class EmployeeService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return userRepository.findAll();
+        return employeeRepository.findAll();
     }
 
     // TODO: Way 3 fix
     //    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Transactional
     public void incrementSalaryByUserId(Long id) {
-        Employee employee = userRepository.findById(id).get();
+        Employee employee = employeeRepository.findById(id).get();
         employee.setSalary(employee.getSalary().add(BigDecimal.TEN));
-        userRepository.save(employee);
+        employeeRepository.save(employee);
 
+    }
+
+    @Transactional
+    public void updateEmployee(Employee employee) {
+        employeeRepository.save(employee);
     }
 }
